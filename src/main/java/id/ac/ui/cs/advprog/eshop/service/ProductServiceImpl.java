@@ -9,16 +9,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import java.util.UUID;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-    private int productId = 0;
 
     @Override
     public Product create(Product product) {
-        product.setProductId(Integer.toString(++productId));
+        product.setProductId(String.valueOf(UUID.randomUUID()));
         productRepository.create(product);
         return product;
     }
@@ -32,14 +33,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductId(int id) {
+    public Product getProductId(String id) {
         Product product = null;
         Iterator<Product> productIterator = productRepository.findAll();
 
         while(productIterator.hasNext()) {
             Product item = productIterator.next();
 
-            if (item.getProductId().equals(Integer.toString(id))) {
+            if (item.getProductId().equals(id)) {
                 product = item;
                 break;
             }
@@ -48,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean deleteProductById(int productId) {
+    public boolean deleteProductById(String productId) {
         Product id = getProductId(productId);
 
         return id != null && productRepository.deleteProduct(id);
