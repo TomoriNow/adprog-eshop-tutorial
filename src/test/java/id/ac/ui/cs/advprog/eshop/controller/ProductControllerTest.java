@@ -38,7 +38,7 @@ class ProductControllerTest {
     void testControllerCreateProductPage() {
         String productName = productController.createProductPage(model);
 
-        assertEquals("createProduct", productName);
+        assertEquals("CreateProduct", productName);
         verify(model, times(1)).addAttribute(eq("product"), any(Product.class));
     }
 
@@ -71,7 +71,7 @@ class ProductControllerTest {
 
         String productName = productController.productListPage(model);
 
-        assertEquals("productList", productName);
+        assertEquals("ProductList", productName);
         verify(model, times(1)).addAttribute(eq("products"), eq(productList));
     }
 
