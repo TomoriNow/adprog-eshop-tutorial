@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -90,6 +91,31 @@ class ProductServiceImplTest {
     }
 
     @Test
+    void testServiceGetProductIdWhenDifferent() {
+        String initialId = "eb558e9f-1c39-460e-8860-71af6af63bd6";
+
+        Product product = new Product();
+        product.setProductId(initialId);
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        List<Product> productList = List.of(product);
+
+        Iterator<Product> productIterator = productList.iterator();
+        when(productRepository.findAll()).thenReturn(productIterator);
+
+        String updatedId = "a0f9de46-90b1-437d-a0bf-d0821dde9096";
+        product.setProductId(updatedId);
+
+        Product savedProduct = productService.getProductId(initialId);
+
+        assertNull(savedProduct);
+        assertNotEquals(product.getProductId(), initialId);
+        assertEquals(product.getProductId(), updatedId);
+    }
+
+    @Test
     void testServiceDeleteProductById() {
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -107,6 +133,23 @@ class ProductServiceImplTest {
         boolean result = productService.deleteProductById(product.getProductId());
 
         assertTrue(result);
+    }
+
+    @Test
+    void testServiceDeleteProductByIdWhenProductDoesNotExist() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+
+        when(productRepository.findAll()).thenReturn(Collections.emptyIterator());
+
+        boolean result = productService.deleteProductById(product.getProductId());
+
+        assertFalse(result);
+
+        verify(productRepository, times(1)).findAll();
+        verify(productRepository, never()).deleteProduct(any());
     }
 
     @Test

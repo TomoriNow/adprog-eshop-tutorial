@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Iterator;
+import java.util.List;
 import  static  org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -191,6 +192,21 @@ class ProductRepositoryTest {
         assertEquals(product3.getProductName(), savedProduct.getProductName());
         assertEquals(product3.getProductQuantity(), savedProduct.getProductQuantity());
 
+        assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testEditProductWhenProductDoesNotExist() {
+        Product product1 = new Product();
+        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setProductName("Sampo Cap Bambang");
+        product1.setProductQuantity(100);
+
+        Product result = productRepository.editProduct(product1);
+
+        assertNull(result);
+
+        Iterator<Product> productIterator = productRepository.findAll();
         assertFalse(productIterator.hasNext());
     }
 }
