@@ -133,6 +133,10 @@ class ProductServiceImplTest {
         boolean result = productService.deleteProductById(product.getProductId());
 
         assertTrue(result);
+        assertNotNull(product.getProductId());
+
+        verify(productRepository, times(1)).findAll();
+        verify(productRepository, times(1)).deleteProduct(product);
     }
 
     @Test
@@ -143,6 +147,27 @@ class ProductServiceImplTest {
         product.setProductQuantity(100);
 
         when(productRepository.findAll()).thenReturn(Collections.emptyIterator());
+
+        boolean result = productService.deleteProductById(product.getProductId());
+
+        assertFalse(result);
+
+        verify(productRepository, times(1)).findAll();
+        verify(productRepository, never()).deleteProduct(any());
+    }
+
+    @Test
+    void testServiceDeleteProductByIdWhenProductHasNoId() {
+        Product product = new Product();
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+
+        String idCheck = product.getProductId();
+
+        assertNull(idCheck);
+
+        when(productRepository.findAll()).thenReturn(Collections.emptyIterator());
+
 
         boolean result = productService.deleteProductById(product.getProductId());
 
