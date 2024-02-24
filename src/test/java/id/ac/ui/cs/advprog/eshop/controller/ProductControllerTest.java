@@ -54,15 +54,15 @@ class ProductControllerTest {
     @Test
     void testControllerProductListPage() {
         Product product1 = new Product();
-        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setProductName("Sampo Cap Bambang");
-        product1.setProductQuantity(100);
+        product1.setId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setName("Sampo Cap Bambang");
+        product1.setQuantity(100);
         productRepository.create(product1);
 
         Product product2 = new Product();
-        product2.setProductId("a0f9de46-90b1-437d-a0bf-d0821dde9096");
-        product2.setProductName("Sampo Cap Usep");
-        product2.setProductQuantity(50);
+        product2.setId("a0f9de46-90b1-437d-a0bf-d0821dde9096");
+        product2.setName("Sampo Cap Usep");
+        product2.setQuantity(50);
         productRepository.create(product2);
 
         List<Product> productList = List.of(product1, product2);
@@ -78,23 +78,23 @@ class ProductControllerTest {
     @Test
     void testControllerDeleteProduct() {
         Product product1 = new Product();
-        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setProductName("Sampo Cap Bambang");
-        product1.setProductQuantity(100);
+        product1.setId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setName("Sampo Cap Bambang");
+        product1.setQuantity(100);
         productRepository.create(product1);
 
-        String productName = productController.deleteProduct(product1.getProductId());
+        String productName = productController.deleteProduct(product1.getId());
         assertEquals("redirect:/product/list", productName);
 
-        verify(productService, times(1)).deleteProductById(product1.getProductId());
+        verify(productService, times(1)).deleteProductById(product1.getId());
     }
 
     @Test
     void testControllerEdit() {
         Product product1 = new Product();
-        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setProductName("Sampo Cap Bambang");
-        product1.setProductQuantity(100);
+        product1.setId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setName("Sampo Cap Bambang");
+        product1.setQuantity(100);
         productRepository.create(product1);
 
         String productName = productController.edit(product1);
@@ -106,14 +106,14 @@ class ProductControllerTest {
     @Test
     void testControllerEditPage() {
         Product product1 = new Product();
-        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setProductName("Sampo Cap Bambang");
-        product1.setProductQuantity(100);
+        product1.setId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setName("Sampo Cap Bambang");
+        product1.setQuantity(100);
         productRepository.create(product1);
 
-        when(productService.getProductId(product1.getProductId())).thenReturn(product1);
+        when(productService.getId(product1.getId())).thenReturn(product1);
 
-        String productName = productController.editPage(model, product1.getProductId());
+        String productName = productController.editPage(model, product1.getId());
 
         assertEquals("EditProduct", productName);
         verify(model, times(1)).addAttribute(eq("product"), eq(product1));
