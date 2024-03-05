@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Builder
@@ -29,12 +30,10 @@ public class Payment {
     }
 
     public void setStatus(String status) {
-        String[] statusList = {"SUCCESS", "REJECTED"};
         if (PaymentStatus.contains(status)) {
             this.status = status;
         } else {
             throw new IllegalArgumentException();
         }
     }
-
 }
