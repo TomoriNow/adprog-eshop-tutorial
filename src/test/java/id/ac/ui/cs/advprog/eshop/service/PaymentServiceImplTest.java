@@ -7,6 +7,7 @@ import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.OrderRepository;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,14 +36,19 @@ public class PaymentServiceImplTest {
     Map<String, String> voucherPayment;
     Map<String, String> CODPayment;
 
-
+    @BeforeAll
+    static void mocking() {
+        UUID mockUUID = UUID.fromString("2176d4b5-2b9f-4c21-9a58-23692ebcefbf");
+        mockStatic(UUID.class);
+        when(UUID.randomUUID()).thenReturn(mockUUID);
+    }
 
     @BeforeEach
     void setUp() {
-        Map<String, String> voucherPayment = new HashMap<>();
+        voucherPayment = new HashMap<>();
         voucherPayment.put("voucherCode", "ESHOP1234ABC5678");
 
-        Map<String, String> CODPayment = new HashMap<>();
+        CODPayment = new HashMap<>();
         CODPayment.put("address", "Kyoto");
         CODPayment.put("deliveryFee", "9999");
 
@@ -79,29 +85,29 @@ public class PaymentServiceImplTest {
         doReturn(order).when(orderRepository).save(order);
 
         Payment result = paymentService.addPayment(orders.getFirst(), payment.getMethod(), payment.getPaymentData());
-        assertEquals(result.getId(), payment.getId());
-        assertEquals(order.getId(), paymentService.paymentIdToOrderId().get(payment.getId()));
 
         verify(paymentRepository, times(1)).save(any(Payment.class));
         verify(orderRepository, times(1)).save(any(Order.class));
+
+        assertEquals(result.getId(), payment.getId());
+        assertEquals(order.getId(), paymentService.paymentIdToOrderId().get(payment.getId()));
     }
 
     @Test
     void testAddPaymentRejected() {
         Payment payment = payments.get(1);
         doReturn(payment).when(paymentRepository).save(any(Payment.class));
-
         Order order = orders.get(1);
         doReturn(order).when(orderRepository).findById(order.getId());
         order.setStatus(OrderStatus.FAILED.getValue());
-        doReturn(order).when(orderRepository).save(order);
 
         Payment result = paymentService.addPayment(orders.get(1), payment.getMethod(), payment.getPaymentData());
-        assertEquals(result.getId(), payment.getId());
-        assertEquals(order.getId(), paymentService.paymentIdToOrderId().get(payment.getId()));
 
         verify(paymentRepository, times(1)).save(any(Payment.class));
         verify(orderRepository, times(1)).save(any(Order.class));
+
+        assertEquals(payment.getId(), result.getId());
+        assertEquals(order.getId(), paymentService.paymentIdToOrderId().get(payment.getId()));
     }
 
     @Test
@@ -124,6 +130,7 @@ public class PaymentServiceImplTest {
         doReturn(order).when(orderRepository).findById(order.getId());
 
         voucherPayment.put("voucherCode", "ESHOP1234ABC");
+        System.out.println(voucherPayment.get("voucherCode"));
         Payment payment = paymentService.addPayment(orders.getFirst(), "voucherCode", voucherPayment);
 
         assertNotNull(payment);
@@ -307,7 +314,7 @@ public class PaymentServiceImplTest {
         assertEquals("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", payment.getId());
         assertEquals("cashOnDelivery", payment.getMethod());
         assertEquals("Kyoto", payment.getPaymentData().get("address"));
-        assertEquals("", payment.getPaymentData().get("deliveryFee"));
+        assertNull(payment.getPaymentData().get("deliveryFee"));
     }
 
     @Test
