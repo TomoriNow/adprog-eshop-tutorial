@@ -347,7 +347,7 @@ public class PaymentServiceImplTest {
     }
 
     @Test
-    void testSetStatusToSuccess() {
+    void testSetPaymentStatusToSuccess() {
         Payment payment = payments.get(1);
         Order order = orders.get(1);
         order.setStatus(OrderStatus.SUCCESS.getValue());
@@ -371,7 +371,7 @@ public class PaymentServiceImplTest {
     }
 
     @Test
-    void testSetStatusToReject() {
+    void testSetPaymentStatusToReject() {
         Payment payment = payments.getFirst();
         Order order = orders.getFirst();
         order.setStatus(OrderStatus.FAILED.getValue());
@@ -395,7 +395,7 @@ public class PaymentServiceImplTest {
     }
 
     @Test
-    void testUpdateStatusInvalidStatus() {
+    void testUpdatePaymentStatusInvalidStatus() {
         Payment payment = payments.get(1);
         doReturn(payment).when(paymentRepository).findById(payment.getId());
 
@@ -406,7 +406,7 @@ public class PaymentServiceImplTest {
     }
 
     @Test
-    void testUpdateStatusInvalidPaymentId() {
+    void testUpdatePaymentStatusInvalidPaymentId() {
         doReturn(null).when(paymentRepository).findById("invalidPaymentId");
         Payment payment = new Payment("invalidPaymentId", "voucherCode", voucherPayment);
 
