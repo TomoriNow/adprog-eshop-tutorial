@@ -61,7 +61,7 @@ public class PaymentRepositoryTest {
     void testSaveUpdatePayment() {
         Payment payment = payments.get(1);
         paymentRepository.save(payment);
-        Payment newPayment = new Payment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getStatus());
+        Payment newPayment = new Payment(payment.getId(), payment.getMethod(), payment.getPaymentData(), PaymentStatus.SUCCESS.getValue());
         Payment result = paymentRepository.save(newPayment);
 
         Payment findResult = paymentRepository.findById(payments.get(1).getId());
