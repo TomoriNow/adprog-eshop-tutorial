@@ -25,14 +25,21 @@ public class PaymentTest {
 
     @Test
     void testCreateEmptyPayment() {
+        Map<String, String> voucherPayment = new HashMap<>();
+        voucherPayment.put("voucherCode", "ESHOP1234ABC5678");
+
+        Map<String, String> CODPayment = new HashMap<>();
+        CODPayment.put("address", "Kyoto");
+        CODPayment.put("deliveryFee", "9999");
+
         voucherPayment.clear();
         CODPayment.clear();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment);
-            Payment payment2 = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", CODPayment);
+        Payment payment1 = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment);
+        Payment payment2 = new Payment("9cd6f93a-77f8-4a1a-a259-484e1b7a54dd", "cashOnDelivery", CODPayment);
 
-        });
+        assertTrue(payment1.getPaymentData().isEmpty());
+        assertTrue(payment2.getPaymentData().isEmpty());
     }
 
     @Test
@@ -84,6 +91,8 @@ public class PaymentTest {
 
     @Test
     void testAddPaymentWithVoucherCodeSuccess() {
+        Map<String, String> voucherPayment = new HashMap<>();
+        voucherPayment.put("voucherCode", "ESHOP1234ABC5678");
         Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment, "SUCCESS");
 
         assertNotNull(payment);
@@ -95,7 +104,10 @@ public class PaymentTest {
 
     @Test
     void testAddPaymentWithCODSuccess() {
-        Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "cashOnDelivery", CODPayment);
+        Map<String, String> CODPayment = new HashMap<>();
+        CODPayment.put("address", "Kyoto");
+        CODPayment.put("deliveryFee", "9999");
+        Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "cashOnDelivery", CODPayment, "SUCCESS");
 
         assertNotNull(payment);
         assertEquals("SUCCESS", payment.getStatus());
