@@ -439,8 +439,10 @@ public class PaymentServiceImplTest {
 
         List<Payment> results = paymentService.getAllPayments();
 
-        for (int i = 0; i < payments.size(); i++) {
+        int i = 0;
+        while (i < payments.size()) {
             assertEquals(payments.get(i).getId(), results.get(i).getId());
+            i++;
         }
 
         assertEquals(2, results.size());
