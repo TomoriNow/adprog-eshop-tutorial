@@ -26,21 +26,38 @@ public class PaymentTest {
     @Test
     void testCreateEmptyPayment() {
         voucherPayment.clear();
+        CODPayment.clear();
 
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment);
+            Payment payment2 = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", CODPayment);
+
         });
     }
 
     @Test
-    void testSetStatusToSuccess() {
+    void testCreatePaymentSuccessStatus() {
         Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment, "SUCCESS");
         assertEquals("SUCCESS", payment.getStatus());
     }
 
     @Test
-    void testSetStatusToRejected() {
+    void testCreatePaymentRejectedStatus() {
         Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment, "REJECTED");
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testSetStatusToSuccess() {
+        Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment);
+        payment.setStatus("SUCCESS");
+        assertEquals("SUCCESS", payment.getStatus());
+    }
+
+    @Test
+    void testSetStatusToRejected() {
+        Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment);
+        payment.setStatus("REJECTED");
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -48,7 +65,7 @@ public class PaymentTest {
     @Test
     void testSetStatusToInvalidStatus() {
         Payment payment = new Payment("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", "voucherCode", voucherPayment);
-        assertThrows(IllegalArgumentException.class, () -> voucherPayment.setStatus("MEOW"));
+        assertThrows(IllegalArgumentException.class, () -> payment.setStatus("MEOW"));
     }
 
     @Test
@@ -84,7 +101,7 @@ public class PaymentTest {
         assertEquals("SUCCESS", payment.getStatus());
         assertEquals("2176d4b5-2b9f-4c21-9a58-23692ebcefbf", payment.getId());
         assertEquals("cashOnDelivery", payment.getMethod());
-        assertEquals("Kyoto", payment.getPaymentData.get("address"));
-        assertEquals("9999", payment.getPaymentData.get("deliveryFee"));
+        assertEquals("Kyoto", payment.getPaymentData().get("address"));
+        assertEquals("9999", payment.getPaymentData().get("deliveryFee"));
     }
 }
