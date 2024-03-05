@@ -76,3 +76,6 @@ can be made in the `ProductRepositoryInterface` and `CarRepositoryInterface` or 
 if we were to make any changes or further develop the code in the future. This action itself lacks the ability for new developers to extend the program and maintain the correctness of the program in the future if unwanted modifications are made without the abstraction of an interface. Furthermore, if SOLID was not applied to the abstraction of interfaces and models in the program,
 the project may have tangled dependencies and responsibilities, making it harder to understand. This complexity can lead to difficulties in debugging and maintaining the code. It also makes the code less modular and could also reduce the reusability of components, as they may be closely tied to specific implementations and contexts. For instance, we cannot reuse the newly introduced `Item` model
 for future products that we may wish to add to the project, and could end up making and repeating more attributes for each product; this increases complexity and makes maintainability for each product harder to achieve in the future.
+
+# Module 4 
+## Reflection
