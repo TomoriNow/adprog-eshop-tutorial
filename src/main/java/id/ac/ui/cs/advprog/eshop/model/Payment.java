@@ -31,9 +31,9 @@ public class Payment {
     public void setStatus(String status) {
         String[] statusList = {"SUCCESS", "REJECTED"};
         if (PaymentStatus.contains(status)) {
-            throw new IllegalArgumentException();
-        } else {
             this.status = status;
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 
