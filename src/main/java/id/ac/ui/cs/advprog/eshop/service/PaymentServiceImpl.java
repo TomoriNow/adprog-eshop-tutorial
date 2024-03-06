@@ -75,7 +75,7 @@ public class PaymentServiceImpl implements PaymentService {
         String address = paymentData.get("address");
         String deliveryFee = paymentData.get("deliveryFee");
 
-        if (isEmptyOrNullOrWhiteSpace(address) || isEmptyOrNullOrWhiteSpace(deliveryFee)) {
+        if (isEmptyOrNull(address) || isEmptyOrNull(deliveryFee)) {
             return PaymentStatus.REJECTED.getValue();
         }
 
@@ -93,7 +93,7 @@ public class PaymentServiceImpl implements PaymentService {
         return (int) input.chars().filter(Character::isDigit).count();
     }
 
-    private boolean isEmptyOrNullOrWhiteSpace(String str) {
+    private boolean isEmptyOrNull(String str) {
         return str == null || str.isEmpty();
     }
 
