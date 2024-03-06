@@ -1,6 +1,8 @@
 # Tutorial Reflections
 ## Name: Muhammad Sean Arsha Galant
 ## NPM: 2206822963
+## Link: https://adprog-eshop-tomorinow.koyeb.app/product/list
+__________________________________________
 
 # Module 1
 ## Reflection 1 | Exercise 1
@@ -38,6 +40,7 @@ understand and navigate. Thus, applying coding standards, conventions, and guide
 in the new test suite; if a test case's logic relies on the state or outcome of another test, it can introduce dependencies and make test maintenance more challenging. To mitigate this, isolate each test case to operate independently, 
 utilizing setup and teardown methods to establish a clean state before each test execution.
 
+__________________________________________
 
 # Module 2
 ## Reflection 4.2
@@ -56,6 +59,8 @@ deployment practice where its role is to automatically deploy the code to the ap
 CI and CD because firstly, there is already a CI script that is running on the repository where it automatically runs tests and scripts in order to check if the code runs correctly. This is added with other automatic code scanning tools which are PMD
 and the Scorecard, which run further tests on the code to see what is wrong. CD is also satisfied in this case because I have registered the repository to Koyeb, and each push/commit made to the repository is automatically ran for deployment or redeployment
 on Koyeb continuously. Due to all of these automated processes described, it could be concluded that the GitHub workflows does indeed satisfy the CI/CD requirements thus far.
+
+__________________________________________
 
 # Module 3
 ## Reflection
@@ -76,3 +81,65 @@ can be made in the `ProductRepositoryInterface` and `CarRepositoryInterface` or 
 if we were to make any changes or further develop the code in the future. This action itself lacks the ability for new developers to extend the program and maintain the correctness of the program in the future if unwanted modifications are made without the abstraction of an interface. Furthermore, if SOLID was not applied to the abstraction of interfaces and models in the program,
 the project may have tangled dependencies and responsibilities, making it harder to understand. This complexity can lead to difficulties in debugging and maintaining the code. It also makes the code less modular and could also reduce the reusability of components, as they may be closely tied to specific implementations and contexts. For instance, we cannot reuse the newly introduced `Item` model
 for future products that we may wish to add to the project, and could end up making and repeating more attributes for each product; this increases complexity and makes maintainability for each product harder to achieve in the future.
+
+__________________________________________
+
+# Module 4 
+## Reflection
+
+1. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.
+
+* Do I have enough functional tests to reassure myself that my application really works, from the point of view of the user?
+
+No, I do not have enough functional tests because currently, other than the Product model that has these, I have not implemented functional tests for either the Car model or the payment model. Therefore, I must need to create more functional tests for both of these models so that I can reassure that the application really works well from the point of view from the user. Furthermore, I need to make a controller layer for the Payment model
+to even begin creating functional tests so that the implementation of the newly added model could be tested from the user's point of view. Therefore, it is required that I create the controller for Payment, as well as the HTML template for the Payment model using Thyme so that I can test it functionally.
+
+* Am I testing all the edge cases thoroughly?
+
+Yes, I do believe have tested as many edge cases as possible thoroughly for each of the features and sub-features for the Payment model that includes tests for the Payment model, Payment repository, and Payment service/service implementation. In each of these test classes, I attempted to cover cases that include if each model/repository/service is empty or does not exist, setting the status of each of the classes (SUCCESS or REJECTED), and testing 
+if for a certain wanted/successful test case (Happy path) or unwanted/malicious test case (or an UnhappyPath) the proposed test still leads to the expected result. Furthermore, I also attempted to try to cover all edge cases for the sub features that include the add Payment by voucher code and add Payment by cash-on-delivery. To do this, I tested both the Unhappy and Happy path cases for the voucher code (such as inputs more or less than 16 characters long, not starting with
+"ESHOP" string, more or less than 8 numerical characters, etc.) and the same thing as well for the cash-on-delivery sub feature (such as if the address or deliveryFee parameters were empty or null).
+
+* Do I have tests that check whether all my components fit together properly? Could some integrated tests do this, or are functional tests enough?
+
+Yes, I do have tests to check whether all my components fit together properly through unit tests, however, I do lack functional and integration tests to ensure the compatibility between components. Nevertheless, The unit tests I integrated do incorporate the features of nearly all the layers (Model, Repository, Service/ServiceImplementation) except Controller (because I have not made the Controller layer for the Bonus). In the Repository Layer for both OrderRepository and PaymentRepository,
+I created tests that incorporated the Order and Payment models to see if they would work with my implementation; such as creating new Order and Payment models, storing them into the repository, calling findById() or findAllPayments()/findAllByAuthor() on the models, etc. In the Service layer, I incorporated both the model and repository made previously in the tests so that I could test the compatibility of the service thoroughly, including edge cases and Unhappy paths stated previously.
+
+* Are my tests giving me the confidence to refactor my code, fearlessly and frequently?
+
+Yes, my tests do give me the confidence to refactor my code fearlessly and frequently as most of the time that I do finish my creating my tests and try running them through the skeleton or initial implementation of the classes I made, the tests would usually fail and satisfy the [RED] condition in the TDD workflow. This encouraged me to rethink and change parts of the program that I deem necessary to satisfy my tests and improve the implementation according to the specifications given 
+in the assignment document. It is also noteworthy that my tests give me a good idea on how to refactor my code and how to use it step-by-step, although it requires a good amount of imagination to test about code that currently does not exist yet while creating my tests. Nevertheless, I always refactored it anyway according to the needs of my tests and the overall structure of the program.
+
+* Are my tests helping me to drive out a good design? If I have a lot of integration tests but less unit tests, do I need to make more unit tests to get better feedback on my code design?
+
+Yes, my tests are helping me out to drive out a good design of my program because it pushes me to think about the little details and functionalities that are required in each of the classes. For example, creating tests for the Service layer pushed me to think about how to differentiate between the type of payments that are going to be used by the user in a use case (either voucherCode or cash-on-delivery), which made me think about creating two separate HashMaps that test each type of payment.
+Furthermore, this lead to me thinking about implementing two separate functions later on the service layer so that every a certain method is requested by the user for payment, I can use a switch case in Java (or if-statement) to call a function which checks the validity of each payment and sets its status accordingly. At the moment, I have a lot of unit tests but lack in integration tests, so I try to test out all the possible cases and edge cases for my code using unit tests; I tested 
+how the code will perform under an Unhappy path and Happy path to make it balanced, and also test if the instantiation of classes could work accordingly in the tests.
+
+* Are my feedback cycles as fast as I would like them? When do I get warned about bugs, and is there any practical way to make that happen sooner?
+
+Yes, my feedback cycles are quite fast. They are definitely helpful for me since I get warned about bugs either from my run terminal in my IntelliJ IDE or from my CI/CD workflows on GitHub that I implemented in the previous module. Every time I push to GitHub during the [RED] commits, the workflows immediately tell me what went wrong as well as create a report using the PMD workflows that I check to improve and refactor my code even further. However, the idea of practically making the warning for bugs 
+happen sooner though is by isolating the test into a single area/scope, or my running a subset of the full test suite so that the runtime of the tests are reduced. Making more meaningful/shorter tests that test out the correctness of the code could also make this happen since it reduces the lines of code that needs to be read by the compiler, and therefore speeds up the warnings/bugs.
+
+* Is there some way that I could write faster integration tests that would get me feedback quicker?
+
+Currently, No. It is impossible to write faster integration tests because at the moment I do not have any integration tests implemented in my project. Nevertheless, If I were to try to attempt to make/write faster integration tests, I would try to isolate each test more and make them more specific and specialized. This could speed up the tests and help me get feedback quicker. Furthermore, I feel like I could improve the setUp() function before each test so that running the integration tests would be quicker
+and thus help me get quicker responses for warnings/bugs from the program. 
+
+* Can I run a subset of the full test suite when I need to?
+
+Yes, I can run a subset of the full test suite when needed. This can be possible since there are separate tests made for the model, repository, and service layers for the Order and Payment (and Car and Product) models respectively. So If I needed to run, for example, the repository tests only, then I can just set to run those tests while other tests are not ran in the test suite. This essentially isolates the amount of tests I need to run and improves the number of desired feedbacks and fixes I need to make for
+the code.
+
+* Am I spending too much time waiting for tests to run, and thus less time in a productive flow state?
+
+Although I have created the mocks and stubs in the test so that in the case that the test fails I would quickly infer where to fix the problem, I do find myself sometimes being too absorbed into making the tests rather than implementing the actual program itself. This somewhat hinders my workflow, however, I still am able to run all my tests quickly regardless each time by running eshop_tests to get back on track (which only takes a couple of seconds to run). To improve upon this, I should create tests that are
+less complex but still covers the program coverage well enough so that I can stay highly productive. Furthermore, I should think of creating more automated CI/CD workflows so that the tests could just be run automatically, and thus I wouldn't have wasted my time running the tests over and over again manually.
+
+2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
+
+* Fast: Yes, running all tests only takes a couple seconds (2-3 seconds), thanks to effective use of mocking, stubbing, and the deliberate design focusing on testing specific methods, models, HashMaps, and other aspects individually. The tests were made quite isolated from one another, so it was quite quick to run as well without disrupting workflows.
+* Isolated/Independent: Yes, each test operates independently, free from dependencies on external data or changes from other tests as they are well-isolated in each layer of the project (model, repository, service). Test states are defined within each test using mocking and doReturn from Mockito, with setUp reinitialized before every test (using BeforeEach).
+* Repeatable: Yes, the tests could be run repeatedly and consistently as every time the test suite runs. The created tests also are unaffected by external services (such as external databases or programs), and the isolation of each test in their own layers also prevent them from interfering with other test cases. 
+* Self-Validating: Yes, strict and correct assertions have been implemented into the test, testing every possible edge case or outcome using assertions such as assertEquals(), assertNull(), assertTrue(), assertFalse(), and assertNotNull() that test the correctness and state of each test to pass/fail. These assertions are included to throw errors, providing clear insight into the cause of any test failures. Furthermore, I used th verify() method from the Mockito test suite to test if a method is called a specific number of times using times(), and verify the absence of a test if a method is not called if it leads to an unhappy path. 
+* Thorough/Timely: Yes, all possible happy and unhappy paths have been considered in the test, such as testing if a payment is successful/rejected, testing if it is empty or present, testing if it is null or not, and testing if the specific criteria (such as the criteria for voucherCode) are met. These comprehensive range of scenarios are created prior to implementation. Additionally, the tests also try to set valid and invalid statuses, as well as different order creation scenarios that could affect each creation of a payment.
